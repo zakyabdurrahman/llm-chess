@@ -63,7 +63,7 @@ def main():
     key = get_openrouter_key()
     print("OpenRouter key loaded." if key else "No key provided.")
 
-    # now here is the call to the game engine (both LLM and chess)
-    # this is just testing chess board rendering
+    # now here is the call to the game engines (both LLM and chess)
+    # this is just testing chess board rendering (produce SVG string)
     board = chess.Board()
     print(chess.svg.board(board))
