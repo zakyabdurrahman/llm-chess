@@ -1,0 +1,19 @@
+[project]
+name = "llm-chess-competition"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "zakyabdurrahman", email = "zakyabdurrahman10@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "chess>=1.11.2",
+]
+
+[project.scripts]
+chess-dev = "llm_chess_competition:main"
+
+[build-system]
+requires = ["uv_build>=0.12.17,<0.13.0"]
+build-backend = "uv_build"
