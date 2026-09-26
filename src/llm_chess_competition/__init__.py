@@ -67,10 +67,11 @@ def main():
 
     agent_factory = ChessAgentFactory()
 
-    maid_agent = agent_factory.make_agent("xiaomi/mimo-v2.6-pro")
+    maid_agent = agent_factory.make_agent("xiaomi/mimo-v2.5-pro")
 
     result = maid_agent.invoke({"messages": [{"role": "user", "content": "Hello"}]})
 
-    print(result['messages'])
+    #this will get the last message (from AI)
+    print(result['messages'][-1].additional_kwargs.get("reasoning_content"))
     
     
