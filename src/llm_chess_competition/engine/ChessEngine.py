@@ -21,3 +21,5 @@ class ChessEngine:
 
     img = Image.open(CACHE_PATH / "temp.png")
     img.show()
+
+  # now make tools (check game state (ASCII), make move, check move legal)
