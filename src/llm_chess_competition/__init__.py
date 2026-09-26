@@ -5,9 +5,11 @@ from pathlib import Path
 
 import chess
 import chess.svg
+import cairosvg
+from PIL import Image
 
 
-CACHE_PATH = Path(__file__).resolve().parents[2] / "cache" / "cache"
+CACHE_PATH = Path(__file__).resolve().parents[2] / "cache"
 CACHE_PATH.mkdir(parents=True, exist_ok=True)
 KEY_NAME = "openrouter_key"
 
@@ -66,4 +68,13 @@ def main():
     # now here is the call to the game engines (both LLM and chess)
     # this is just testing chess board rendering (produce SVG string)
     board = chess.Board()
-    print(chess.svg.board(board))
+    board_svg = chess.svg.board(board)
+    png_board = cairosvg.svg2png(bytestring=board_svg.encode('utf-8'))
+    # Save temporarily to render as text pixels
+    with open(CACHE_PATH / "temp.png", "wb") as f:
+      f.write(png_board) # type: ignore
+
+    
+
+    img = Image.open(CACHE_PATH / "temp.png")
+    img.show()
