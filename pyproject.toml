@@ -11,6 +11,7 @@ dependencies = [
     "cairosvg>=2.9.1",
     "chess>=1.11.2",
     "langchain>=1.4.2",
+    "langchain-openrouter>=0.2.9",
     "pillow>=12.3.0",
 ]
 

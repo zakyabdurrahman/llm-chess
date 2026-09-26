@@ -2,11 +2,9 @@ import argparse
 import getpass
 import shelve
 from pathlib import Path
+from .engine.ChessAgentFactory import ChessAgentFactory
 
-import chess
-import chess.svg
-import cairosvg
-from PIL import Image
+import os
 
 
 CACHE_PATH = Path(__file__).resolve().parents[2] / "cache"
@@ -65,16 +63,14 @@ def main():
     key = get_openrouter_key()
     print("OpenRouter key loaded." if key else "No key provided.")
 
-    # now here is the call to the game engines (both LLM and chess)
-    # this is just testing chess board rendering (produce SVG string)
-    board = chess.Board()
-    board_svg = chess.svg.board(board)
-    png_board = cairosvg.svg2png(bytestring=board_svg.encode('utf-8'))
-    # Save temporarily to render as text pixels
-    with open(CACHE_PATH / "temp.png", "wb") as f:
-      f.write(png_board) # type: ignore
+    os.environ['OPENROUTER_API_KEY'] = key
 
+    agent_factory = ChessAgentFactory()
+
+    maid_agent = agent_factory.make_agent("xiaomi/mimo-v2.6-pro")
+
+    result = maid_agent.invoke({"messages": [{"role": "user", "content": "Hello"}]})
+
+    print(result['messages'])
     
-
-    img = Image.open(CACHE_PATH / "temp.png")
-    img.show()
+    
