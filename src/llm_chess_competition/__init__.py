@@ -2,28 +2,34 @@ import argparse
 import getpass
 import shelve
 from pathlib import Path
-from .engine.ChessAgentFactory import ChessAgentFactory
+from .engine.GameLoop import GameLoop
 
 import os
 
 
-CACHE_PATH = Path(__file__).resolve().parents[2] / "cache"
-CACHE_PATH.mkdir(parents=True, exist_ok=True)
+CACHE_DIR = Path(__file__).resolve().parents[2] / "cache"
+CACHE_DIR.mkdir(parents=True, exist_ok=True)
+KEY_DB = CACHE_DIR / "key"
 KEY_NAME = "openrouter_key"
 
 
+def clear_cache_pngs():
+    for png in CACHE_DIR.glob("*.png"):
+        png.unlink()
+
+
 def load_key():
-    with shelve.open(str(CACHE_PATH)) as cache:
+    with shelve.open(str(KEY_DB)) as cache:
         return cache.get(KEY_NAME)
 
 
 def save_key(key):
-    with shelve.open(str(CACHE_PATH)) as cache:
+    with shelve.open(str(KEY_DB)) as cache:
         cache[KEY_NAME] = key
 
 
 def reset_key():
-    with shelve.open(str(CACHE_PATH)) as cache:
+    with shelve.open(str(KEY_DB)) as cache:
         cache.pop(KEY_NAME, None)
 
 
@@ -49,6 +55,8 @@ def get_openrouter_key():
 
 
 def main():
+    clear_cache_pngs()
+
     parser = argparse.ArgumentParser(description="OpenRouter key cache")
     parser.add_argument(
         "--reset", action="store_true", help="clear the cached OpenRouter key"
@@ -65,13 +73,7 @@ def main():
 
     os.environ['OPENROUTER_API_KEY'] = key
 
-    agent_factory = ChessAgentFactory()
-
-    maid_agent = agent_factory.make_agent("xiaomi/mimo-v2.5-pro")
-
-    result = maid_agent.invoke({"messages": [{"role": "user", "content": "Hello"}]})
-
-    #this will get the last message (from AI)
-    print(result['messages'][-1].additional_kwargs.get("reasoning_content"))
+    game_loop = GameLoop()
+    game_loop.initAgents()
     
     
