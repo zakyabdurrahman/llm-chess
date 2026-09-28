@@ -1,18 +1,15 @@
 [project]
 name = "llm-chess-competition"
 version = "0.1.0"
-description = "Add your description here"
+description = "Human-supervised chess matches between independent LLM agents"
 readme = "README.md"
 authors = [
     { name = "zakyabdurrahman", email = "zakyabdurrahman10@gmail.com" }
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "cairosvg>=2.9.1",
     "chess>=1.11.2",
-    "langchain>=1.4.2",
-    "langchain-openrouter>=0.2.9",
-    "pillow>=12.3.0",
+    "openai-codex>=0.157.1",
 ]
 
 [project.scripts]
@@ -21,3 +18,8 @@ chess-dev = "llm_chess_competition:main"
 [build-system]
 requires = ["uv_build>=0.12.17,<0.13.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
